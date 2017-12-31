@@ -23,23 +23,71 @@ private Item[] store =
 };                             
 public int linearSearch(int catNumToFind)
 {
-  //complete this method
+  for (int i = 0; i < store.length; i++) {
+    if (store[i].getCatNum() == catNumToFind) {
+      return store[i].getInventory();
+    }
+    //basic, run through array till find
+  }
   return -1;
 }
 public int recursiveLinearSearch(int catNumToFind, int startIndex)
 {
-  //complete this method
-  return -1;
+  //if your startindex is a higher number than final index in array, end
+  if (startIndex >= store.length) {
+    return -1;
+  }
+  //if you have your thing, return the inventory
+  else if (store[startIndex].getCatNum() == catNumToFind) {
+    return store[startIndex].getInventory();
+  }
+  else {
+    //otherwise increase start index and go again
+    return recursiveLinearSearch(catNumToFind, startIndex+1);
+  }
 }
 public int binarySearch(int catNumToFind)
 {
-  //complete this method    
+  //low guess is 0, start of array. high guess is final position in array, length-1
+  int nLow = 0;
+  int nHigh = store.length-1;
+  while (nLow <= nHigh) {
+    //while your low guess is less than or equal to your high guess, do stuff.
+    int mid = (nLow+nHigh)/2; //this is going to go to the middle of the array
+    if (store[mid].getCatNum() == catNumToFind) {
+      //if you have ur stuff, return inventory
+      return store[mid].getInventory();
+    }
+    else if (store[mid].getCatNum() > catNumToFind) {
+      //since sorted array, if your catnum is greater than what you want, then you can discount all stuff above your current high, so you want to move high down to below current position
+      nHigh = mid-1;
+    }
+    else if (store[mid].getCatNum() < catNumToFind) {
+      //if less than your wanted stuff, your low can be moved to above your current position.
+      nLow = mid+1;
+    }
+  }   
   return -1;
 }
 public int recursiveBinarySearch(int catNumToFind, int nLow, int nHigh)
 {
-  //complete this method    
-  return -1;
+  int mid = (nLow+nHigh)/2; //middle of array
+  if (nLow > nHigh) {
+    //if low guess greater than high guess
+    return -1;
+  }
+  else if (store[mid].getCatNum() == catNumToFind) {
+    //if found, return inventory
+    return store[mid].getInventory();
+  }
+  else if (store[mid].getCatNum() > catNumToFind) {
+    //if greater, run function again but high is below current position
+    return recursiveBinarySearch(catNumToFind,nLow,mid-1);
+  }
+  else {
+    //run again but low is above current position
+    return recursiveBinarySearch(catNumToFind,mid+1,nHigh);
+  }
 }
 public void setup()
 {
@@ -94,9 +142,3 @@ public void draw()
 {
   //empty!
 }
-
-
-
-
-
-
